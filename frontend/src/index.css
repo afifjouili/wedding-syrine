@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=Great+Vibes&family=Allura&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f7ecd0;
+  color: #4a4127;
+}
+
+code { font-family: source-code-pro, Menlo, Monaco, monospace; }
+
+@layer base {
+  :root {
+    --background: 44 55% 89%;
+    --foreground: 36 33% 22%;
+    --card: 44 55% 92%;
+    --card-foreground: 36 33% 22%;
+    --popover: 44 55% 95%;
+    --popover-foreground: 36 33% 22%;
+    --primary: 36 33% 25%;
+    --primary-foreground: 44 55% 95%;
+    --secondary: 40 40% 82%;
+    --secondary-foreground: 36 33% 22%;
+    --muted: 40 40% 85%;
+    --muted-foreground: 36 20% 40%;
+    --accent: 12 40% 55%;
+    --accent-foreground: 44 55% 95%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 44 55% 95%;
+    --border: 40 30% 70%;
+    --input: 40 30% 78%;
+    --ring: 36 33% 35%;
+    --radius: 0.25rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
