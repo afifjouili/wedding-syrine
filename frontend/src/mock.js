@@ -4,8 +4,8 @@ export const weddingData = {
   couple: {
     groom: 'Zohan',
     bride: 'Rose',
-    weddingDate: '27.09.26',
-    weddingDateISO: '2026-09-27T17:00:00',
+    weddingDate: '06-09-2026',
+    weddingDateISO: '2026-09-06T17:00:00',
   },
   intro: {
     lineOne: 'Two Souls',
@@ -23,12 +23,11 @@ export const weddingData = {
     { time: '9 PM', title: 'Dance' },
   ],
   venue: {
-    name: 'Islamic Center of Melville',
-    address: '118 Old East Neck Road Melville, NY 11747',
-    mapUrl:
-      'https://www.google.com/maps/place/118+Old+E+Neck+Rd,+Melville,+NY+11747/@40.7891,-73.4184,17z',
+    name: 'قاعة أفراح EVASION منوبة',
+    address: 'منوبة، تونس (Manouba, Tunisie)',
+    mapUrl: 'https://maps.app.goo.gl/keGLD4wndExvC7kG7',
     embedUrl:
-      'https://www.google.com/maps?q=118+Old+East+Neck+Road+Melville+NY+11747&output=embed',
+      'https://maps.google.com/maps?q=36.8082595,10.0789402&z=15&output=embed',
   },
   gift: {
     title: 'Gift Preference',

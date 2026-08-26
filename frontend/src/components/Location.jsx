@@ -27,7 +27,7 @@ export default function Location() {
         <div className="mt-6 flex flex-col items-center gap-2">
           <MapPin size={22} className="text-[#a1874a]" />
           <h4 className="font-display text-3xl md:text-4xl text-ink">{venue.name}</h4>
-          <p className="font-body text-lg md:text-xl text-ink-soft">Address: {venue.address}</p>
+          <p className="font-body text-lg md:text-xl text-ink-soft">{venue.address}</p>
         </div>
 
         <div className="mt-12 relative mx-auto max-w-3xl">

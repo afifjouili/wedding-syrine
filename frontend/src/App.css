@@ -51,16 +51,16 @@
 }
 
 .font-display {
-  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', 'Amiri', 'Playfair Display', serif;
 }
 
 .font-elegant {
-  font-family: 'Cinzel', 'Cormorant Garamond', serif;
+  font-family: 'Cinzel', 'Cormorant Garamond', 'Amiri', serif;
   letter-spacing: 0.18em;
 }
 
 .font-body {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', 'Amiri', serif;
 }
 
 .text-ink { color: #4a4127; }
