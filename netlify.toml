@@ -1,7 +1,7 @@
 [build]
   base = "frontend"
   publish = "build"
-  command = "CI=false yarn build"
+  command = "yarn build"
 
 [[redirects]]
   from = "/*"
