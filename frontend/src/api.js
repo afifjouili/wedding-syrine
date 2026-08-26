@@ -26,52 +26,38 @@ export const submitRSVP = async (rsvpData) => {
     at: new Date().toISOString()
   };
 
-  // 1. Fetch current RSVPs from cloud storage
-  let currentList = [];
+  // 1. Submit to Netlify Serverless API endpoint (/api/rsvps)
   try {
-    const res = await axios.get(RSVP_CLOUD_URL, { timeout: 6000 });
-    if (res.data?.data?.rsvps && Array.isArray(res.data.data.rsvps)) {
-      currentList = res.data.data.rsvps;
+    const res = await axios.post('/api/rsvps', newEntry, { timeout: 9000 });
+    if (res.data?.success) {
+      console.log('RSVP persisted successfully via Netlify Function');
     }
   } catch (err) {
-    console.warn('Could not fetch existing cloud RSVPs:', err.message);
+    console.warn('Netlify function submit note:', err.message);
   }
 
-  // 2. Prepend new RSVP and save to cloud
-  const updatedList = [newEntry, ...currentList];
+  // 2. Also keep local storage sync
   try {
-    await axios.put(
-      RSVP_CLOUD_URL,
-      {
-        name: 'wedding_syrine_rsvps_list',
-        data: { rsvps: updatedList }
-      },
-      { timeout: 8000 }
-    );
-  } catch (err) {
-    console.warn('Cloud RSVP save failed:', err.message);
-  }
-
-  // 3. Sync to local storage
-  try {
-    localStorage.setItem('sg_rsvps', JSON.stringify(updatedList));
+    const existing = JSON.parse(localStorage.getItem('sg_rsvps') || '[]');
+    const updated = [newEntry, ...existing.filter(e => e.id !== newEntry.id)];
+    localStorage.setItem('sg_rsvps', JSON.stringify(updated));
   } catch (_) {}
 
   return { status: 'success', data: newEntry };
 };
 
 export const fetchRSVPs = async () => {
-  // 1. Fetch from cloud storage
+  // 1. Fetch from Netlify Serverless API endpoint (/api/rsvps)
   try {
-    const res = await axios.get(RSVP_CLOUD_URL, { timeout: 7000 });
-    if (res.data?.data?.rsvps && Array.isArray(res.data.data.rsvps)) {
+    const res = await axios.get('/api/rsvps', { timeout: 9000 });
+    if (res.data?.success && Array.isArray(res.data.rsvps)) {
       try {
-        localStorage.setItem('sg_rsvps', JSON.stringify(res.data.data.rsvps));
+        localStorage.setItem('sg_rsvps', JSON.stringify(res.data.rsvps));
       } catch (_) {}
-      return res.data.data.rsvps;
+      return res.data.rsvps;
     }
   } catch (err) {
-    console.warn('Cloud fetch RSVPs note:', err.message);
+    console.warn('Netlify function fetch note:', err.message);
   }
 
   // 2. Fallback to localStorage
@@ -85,16 +71,9 @@ export const fetchRSVPs = async () => {
 
 export const saveAllRSVPs = async (list) => {
   try {
-    await axios.put(
-      RSVP_CLOUD_URL,
-      {
-        name: 'wedding_syrine_rsvps_list',
-        data: { rsvps: list }
-      },
-      { timeout: 8000 }
-    );
+    await axios.put('/api/rsvps', { rsvps: list }, { timeout: 9000 });
   } catch (err) {
-    console.warn('Cloud save all RSVPs note:', err.message);
+    console.warn('Netlify function save all note:', err.message);
   }
 
   try {

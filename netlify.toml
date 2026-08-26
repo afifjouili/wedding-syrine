@@ -2,6 +2,17 @@
   base = "frontend"
   publish = "build"
   command = "yarn build"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/rsvps"
+  to = "/.netlify/functions/rsvps"
+  status = 200
+
+[[redirects]]
+  from = "/api/rsvp"
+  to = "/.netlify/functions/rsvps"
+  status = 200
 
 [[redirects]]
   from = "/*"
