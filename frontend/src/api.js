@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const CLOUD_URL = 'https://api.restful-api.dev/objects/ff8081819ff5b11001a00c4359152fa2';
+const RSVP_CLOUD_URL = 'https://api.restful-api.dev/objects/ff8081819ff5b11001a0403268b82c85';
 
 export const getApiBaseUrl = () => {
   if (process.env.REACT_APP_API_URL) return process.env.REACT_APP_API_URL;
@@ -15,22 +16,92 @@ export const getApiBaseUrl = () => {
 };
 
 export const submitRSVP = async (rsvpData) => {
+  const newEntry = {
+    id: 'rsvp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+    name: rsvpData.name || 'ضيف مجهول',
+    attending: rsvpData.attending || 'yes',
+    guests: String(rsvpData.guests || '1'),
+    song: rsvpData.song || '',
+    children: rsvpData.children || '',
+    at: new Date().toISOString()
+  };
+
+  // 1. Fetch current RSVPs from cloud storage
+  let currentList = [];
   try {
-    const response = await axios.post(`${getApiBaseUrl()}/rsvp`, rsvpData, { timeout: 8000 });
-    return response.data;
-  } catch (error) {
-    console.warn('RSVP note:', error.message);
-    return { status: 'success', local: true };
+    const res = await axios.get(RSVP_CLOUD_URL, { timeout: 6000 });
+    if (res.data?.data?.rsvps && Array.isArray(res.data.data.rsvps)) {
+      currentList = res.data.data.rsvps;
+    }
+  } catch (err) {
+    console.warn('Could not fetch existing cloud RSVPs:', err.message);
   }
+
+  // 2. Prepend new RSVP and save to cloud
+  const updatedList = [newEntry, ...currentList];
+  try {
+    await axios.put(
+      RSVP_CLOUD_URL,
+      {
+        name: 'wedding_syrine_rsvps_list',
+        data: { rsvps: updatedList }
+      },
+      { timeout: 8000 }
+    );
+  } catch (err) {
+    console.warn('Cloud RSVP save failed:', err.message);
+  }
+
+  // 3. Sync to local storage
+  try {
+    localStorage.setItem('sg_rsvps', JSON.stringify(updatedList));
+  } catch (_) {}
+
+  return { status: 'success', data: newEntry };
 };
 
 export const fetchRSVPs = async () => {
+  // 1. Fetch from cloud storage
   try {
-    const response = await axios.get(`${getApiBaseUrl()}/rsvps`, { timeout: 8000 });
-    return response.data;
-  } catch (error) {
-    return { issues: [] };
+    const res = await axios.get(RSVP_CLOUD_URL, { timeout: 7000 });
+    if (res.data?.data?.rsvps && Array.isArray(res.data.data.rsvps)) {
+      try {
+        localStorage.setItem('sg_rsvps', JSON.stringify(res.data.data.rsvps));
+      } catch (_) {}
+      return res.data.data.rsvps;
+    }
+  } catch (err) {
+    console.warn('Cloud fetch RSVPs note:', err.message);
   }
+
+  // 2. Fallback to localStorage
+  try {
+    const local = JSON.parse(localStorage.getItem('sg_rsvps') || '[]');
+    return local;
+  } catch (_) {}
+
+  return [];
+};
+
+export const saveAllRSVPs = async (list) => {
+  try {
+    await axios.put(
+      RSVP_CLOUD_URL,
+      {
+        name: 'wedding_syrine_rsvps_list',
+        data: { rsvps: list }
+      },
+      { timeout: 8000 }
+    );
+  } catch (err) {
+    console.warn('Cloud save all RSVPs note:', err.message);
+  }
+
+  try {
+    localStorage.setItem('sg_rsvps', JSON.stringify(list));
+  } catch (_) {}
+
+  return list;
 };
 
 // Fetch wedding content from persistent cloud storage

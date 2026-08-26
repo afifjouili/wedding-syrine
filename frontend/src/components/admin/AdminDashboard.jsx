@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWeddingData, generateShareableUrl } from '../../context/WeddingContext';
+import { fetchRSVPs, saveAllRSVPs } from '../../api';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -90,15 +91,36 @@ export default function AdminDashboard() {
     }
   };
 
-  const refreshGuestList = () => {
+  const [refreshingGuests, setRefreshingGuests] = useState(false);
+
+  // Load guest list from cloud on mount
+  useEffect(() => {
+    let isMounted = true;
+    fetchRSVPs().then((list) => {
+      if (isMounted && Array.isArray(list)) {
+        setGuestList(list);
+      }
+    });
+    return () => { isMounted = false; };
+  }, []);
+
+  const refreshGuestList = async () => {
+    setRefreshingGuests(true);
     try {
-      const list = JSON.parse(localStorage.getItem('sg_rsvps') || '[]');
+      const list = await fetchRSVPs();
       setGuestList(list);
-      alert('تم تحديث قائمة الضيوف!');
-    } catch (_) {}
+      alert('تم تحديث قائمة الضيوف من السحابة بنجاح! / Guest list updated from cloud!');
+    } catch (_) {
+      try {
+        const list = JSON.parse(localStorage.getItem('sg_rsvps') || '[]');
+        setGuestList(list);
+      } catch (e) {}
+    } finally {
+      setRefreshingGuests(false);
+    }
   };
 
-  const handleAddManualGuest = (e) => {
+  const handleAddManualGuest = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
     if (!newGuest.name.trim()) {
       alert('يرجى كتابة اسم الضيف');
@@ -106,28 +128,29 @@ export default function AdminDashboard() {
     }
     const entry = {
       ...newGuest,
+      id: 'manual_' + Date.now(),
       at: new Date().toISOString()
     };
     const updated = [entry, ...guestList];
     setGuestList(updated);
-    localStorage.setItem('sg_rsvps', JSON.stringify(updated));
+    await saveAllRSVPs(updated);
     setNewGuest({ name: '', attending: 'yes', guests: '1', song: '', children: '' });
     setAddGuestOpen(false);
     alert('تمت إضافة الضيف إلى القائمة بنجاح!');
   };
 
-  const handleDeleteGuest = (index) => {
+  const handleDeleteGuest = async (index) => {
     if (window.confirm('هل أنت متأكد من حذف هذا الضيف من القائمة؟')) {
       const updated = guestList.filter((_, i) => i !== index);
       setGuestList(updated);
-      localStorage.setItem('sg_rsvps', JSON.stringify(updated));
+      await saveAllRSVPs(updated);
     }
   };
 
-  const handleClearAllGuests = () => {
+  const handleClearAllGuests = async () => {
     if (window.confirm('هل أنت متأكد من حذف جميع الضيوف من القائمة؟')) {
       setGuestList([]);
-      localStorage.removeItem('sg_rsvps');
+      await saveAllRSVPs([]);
     }
   };
 
