@@ -32,9 +32,8 @@ export const weddingData = {
     body: 'Kindly, no boxed gifts please.',
   },
   dressCode: {
-    title: 'Dress Code',
-    body:
-      'We kindly ask guests to avoid deep red and maroon attire for the celebration.',
+    title: 'الزي الرسمي',
+    body: 'نتطلع لرؤيتكم بأبهى حلة تليق بهذه المناسبة السعيدة.\nالرجاء الالتزام باللون الوردي بالنسبة إلى اللون.',
   },
   rsvp: {
     heading: 'Confirm Your Attendance',

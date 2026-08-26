@@ -27,7 +27,7 @@ export default function GiftDress() {
           <Shirt size={20} className="text-[#a9802f] mb-2" />
           <h4 className="font-display italic text-2xl sm:text-3xl text-[#6e521e]">{dressCode.title}</h4>
           <div className="my-4 mx-auto hairline w-20" />
-          <p className="font-body text-[16px] leading-[1.7] text-[#5a4a38] max-w-[320px]">
+          <p className="font-body text-[16px] leading-[1.7] text-[#5a4a38] max-w-[320px] whitespace-pre-line">
             {dressCode.body}
           </p>
         </div>
