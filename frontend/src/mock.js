@@ -5,7 +5,7 @@ export const weddingData = {
     groom: 'Zohan',
     bride: 'Rose',
     weddingDate: '06-09-2026',
-    weddingDateISO: '2026-09-06T17:00:00',
+    weddingDateISO: '2026-09-06T16:00:00',
   },
   intro: {
     lineOne: 'Two Souls',
@@ -16,11 +16,9 @@ export const weddingData = {
       'Join us for an evening of love, laughter, duas, and unforgettable memories as we begin our forever.',
   },
   schedule: [
-    { time: '5 PM', title: 'Guest Arrival' },
-    { time: '6 PM', title: 'Nikkah Ceremony' },
-    { time: '7 PM', title: 'Mocktail Hour' },
-    { time: '8 PM', title: 'Dinner' },
-    { time: '9 PM', title: 'Dance' },
+    { time: '16:00 م', title: 'استقبال الضيوف' },
+    { time: '17:00 م', title: 'عقد القران المبارك' },
+    { time: '18:00 م', title: 'الاحتفال والزفة' },
   ],
   venue: {
     name: 'قاعة أفراح EVASION منوبة',

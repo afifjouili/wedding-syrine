@@ -5,7 +5,7 @@ import { decor as defaultDecor } from '../mock';
 // These defaults are ONLY used as a last resort if cloud AND localStorage both fail.
 // The cloud (admin panel saves) is the single source of truth.
 export const defaultWeddingData = {
-  couple: { groom: 'سيرين', bride: 'وائل', weddingDate: '06-09-2026', weddingDateISO: '2026-09-06T17:00:00' },
+  couple: { groom: 'سيرين', bride: 'وائل', weddingDate: '06-09-2026', weddingDateISO: '2026-09-06T16:00:00' },
   intro: {
     lineOne: 'روحـان',
     lineTwo: 'وقـدرٌ واحـد',
@@ -14,11 +14,9 @@ export const defaultWeddingData = {
     body: 'يسعدنا ويشرفنا دعوتكم لمشاركتنا فرحتنا بأجمل ليالي العمر، لتكتمل سعادتنا بحضوركم ودعواتكم الصادقة لنا ببداية حياة مباركة.'
   },
   schedule: [
-    { time: '05:00 م', title: 'استقبال الضيوف' },
-    { time: '06:00 م', title: 'عقد القران المبارك' },
-    { time: '07:00 م', title: 'حفل الاستقبال والضيافة' },
-    { time: '08:00 م', title: 'مأدبة العشاء' },
-    { time: '09:00 م', title: 'الاحتفال والزفة' }
+    { time: '16:00 م', title: 'استقبال الضيوف' },
+    { time: '17:00 م', title: 'عقد القران المبارك' },
+    { time: '18:00 م', title: 'الاحتفال والزفة' }
   ],
   venue: {
     title: 'الموقع الرئيسي',
