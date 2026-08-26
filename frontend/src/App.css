@@ -283,3 +283,16 @@ html, body {
     border-radius: 14px;
   }
 }
+
+/* ─── Netlify Badge Override ─────────────────────── */
+[id*="netlify-badge"],
+[class*="netlify-badge"],
+[data-netlify-badge],
+iframe[src*="netlify"],
+netlify-badge {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
